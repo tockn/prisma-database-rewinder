@@ -3,13 +3,16 @@ import * as process from "process";
 
 type Options = {
 	envCheck?: boolean;
-}
+};
 
 export class PrismaDatabaseRewinder {
 	private insertedTables: string[] = [];
-	constructor(private db: PrismaClientLike, options: Options = {
-		envCheck: true
-	}) {
+	constructor(
+		private db: PrismaClientLike,
+		options: Options = {
+			envCheck: true,
+		},
+	) {
 		if (options.envCheck && process.env.NODE_ENV !== "test") {
 			throw new Error("You can't run DatabaseRewinder in non-test environment");
 		}
