@@ -1,5 +1,7 @@
 # prisma-database-rewinder
 
+[![npm version](https://badge.fury.io/js/prisma-database-rewinder.svg)](https://badge.fury.io/js/prisma-database-rewinder)
+
 `prisma-database-rewinder` is a port of [database-rewinder](https://github.com/amatsuda/database_rewinder) for [Prisma](https://github.com/prisma/prisma).  
 This library is designed to **extremely fast** clean up test database records in Integration tests using a database.  
 It's currently intended for use with Jest and PostgreSQL.  
