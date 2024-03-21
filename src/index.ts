@@ -1,5 +1,6 @@
 import { PrismaClientLike } from "./prismaClientLike";
 import * as process from "process";
+import {Driver, driverFactory} from "./driver/driver";
 
 type Options = {
 	envCheck?: boolean;
@@ -7,8 +8,9 @@ type Options = {
 
 export class PrismaDatabaseRewinder {
 	private insertedTables: string[] = [];
+	private driver: Driver;
 	constructor(
-		private db: PrismaClientLike,
+		private prisma: PrismaClientLike,
 		options: Options = {
 			envCheck: true,
 		},
@@ -16,28 +18,25 @@ export class PrismaDatabaseRewinder {
 		if (options.envCheck && process.env.NODE_ENV !== "test") {
 			throw new Error("You can't run DatabaseRewinder in non-test environment");
 		}
+		this.driver = driverFactory(prisma);
 	}
 
 	async beforeAll() {
-		const tables = await this.db.$queryRaw<
-			{ tablename: string }[]
-		>`SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename != ' _prisma_migrations'`.then(
-			(r) => r.map((t) => t.tablename),
-		);
+		const tables = await this.driver.listAllTables()
 		for (const table of tables) {
-			await this.db.$executeRawUnsafe(`DELETE FROM "${table}"`);
+			await this.driver.deleteAllRecordsByTableName(table);
 		}
 		this.watchInsertedTables();
 	}
 
 	async afterEach() {
 		for (const table of this.insertedTables) {
-			await this.db.$executeRawUnsafe(`DELETE FROM "${table}"`);
+			await this.driver.deleteAllRecordsByTableName(table);
 		}
 	}
 
 	private watchInsertedTables() {
-		this.db.$on("query", (e) => {
+		this.prisma.$on("query", (e) => {
 			const match = e.query.match(
 				/\s*INSERT(?:\s+IGNORE)?(?:\s+INTO)?\s+(?:\.*[`"]?([^.\s`"(]+)[`"]?)*/i,
 			);
