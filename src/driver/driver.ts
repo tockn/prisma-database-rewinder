@@ -13,11 +13,10 @@ export const driverFactory = (db: PrismaClientLike): Driver => {
 	if (!DATABASE_URL) {
 		return new PostgresDriver(db)
 	}
-	const url = new URL(process.env.DATABASE_URL)
+	const url = new URL(DATABASE_URL)
 	switch (url.protocol) {
 		case "postgresql:":
 			return new PostgresDriver(db)
-		default:
-			new Error(`[prisma-database-rewinder] Unsupported database: ${url.protocol}`)
 	}
+	throw new Error(`[prisma-database-rewinder] Unsupported database: ${url.protocol}`)
 }
