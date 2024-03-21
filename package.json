@@ -1,0 +1,46 @@
+{
+	"name": "prisma-database-rewinder",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"ORM",
+		"Prisma",
+		"prisma2",
+		"Prisma Client",
+		"client",
+		"query",
+		"query-builder",
+		"database",
+		"db",
+		"JavaScript",
+		"JS",
+		"TypeScript",
+		"TS",
+		"SQL",
+		"SQLite",
+		"pg",
+		"Postgres",
+		"PostgreSQL",
+		"CockroachDB",
+		"MySQL",
+		"MariaDB",
+		"MSSQL",
+		"SQL Server",
+		"SQLServer",
+		"MongoDB"
+	],
+	"author": "tockn",
+	"license": "MIT",
+	"devDependencies": {
+		"@biomejs/biome": "1.6.1",
+		"@types/node": "^20.11.30",
+		"typescript": "^5.4.3"
+	},
+	"dependencies": {
+		"@prisma/client": "^5.11.0"
+	}
+}
