@@ -37,11 +37,9 @@ export class PrismaDatabaseRewinder {
 
 	private watchInsertedTables() {
 		this.prisma.$on("query", (e) => {
-			const match = e.query.match(
-				/\s*INSERT(?:\s+IGNORE)?(?:\s+INTO)?\s+(?:\.*[`"]?([^.\s`"(]+)[`"]?)*/i,
-			);
-			if (match?.length) {
-				this.insertedTables.push(match[1]);
+			const resp = this.driver.verifyCreateRecordQuery(e.query)
+			if (resp) {
+				this.insertedTables.push(resp.tableName);
 			}
 		});
 	}
