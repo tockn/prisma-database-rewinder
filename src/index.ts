@@ -1,4 +1,5 @@
 import { PrismaClientLike } from "./prismaClientLike";
+import * as process from "process";
 
 type Options = {
 	envCheck?: boolean;
